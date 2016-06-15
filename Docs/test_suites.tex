@@ -1,0 +1,22 @@
+\externaldocument{configuration_tbl}
+\section{Test Suites} 
+We accompany \textit{MCxplore} with sets of regression tests to validate and evaluate most of the modern memory controller properties. 
+Namely, we provide three test suites based on the model we use to generate this test suite. All test suites reside in the TestSuites subdirectory. 
+Table~\ref{tb:suites} tabulates these test suites.
+
+\begin{table}[h]
+\caption{Test Suites\label{tb:suites}}
+\begin{tabular}{|c|c|p{11cm}|}
+\hline
+Suite & Model used & Description\\
+\hline
+regressionSuite & noMChk & this suite includes tests that cover all combinations of the configuration parameters in Table~\ref{tb:config_noMChk}\\
+\hline 
+
+PoliciesSuite & REQmdl & this suite includes tests that test most commonly used policies of commodity memory controllers such as page policies, address mapping and arbitration schemes.\\
+\hline
+
+TimingSuites & CMDmdl & this suite includes tests to detect any timing violations in most timing constraints\\
+\hline
+\end{tabular}
+\end{table}

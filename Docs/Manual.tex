@@ -1,0 +1,65 @@
+
+
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+ \usepackage{hyperref}
+ \usepackage{multirow}
+ \usepackage[margin=1in]{geometry}
+ \usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{xr}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\newcommand*{\escape}[1]{\texttt{\textbackslash#1}}
+\newcommand*{\escapeI}[1]{\texttt{\expandafter\string\csname #1\endcsname}}
+\newcommand*{\escapeII}[1]{\texttt{\char`\\#1}}
+
+%\hypersetup{
+%    colorlinks,
+%    citecolor=black,
+%    filecolor=black,
+%    linkcolor=black,
+%    urlcolor=black
+%}
+
+\usepackage{xcolor}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily,
+  showstringspaces=false,
+  commentstyle=\color{red},
+  keywordstyle=\color{blue},
+  backgroundcolor=\color{black!5} % set backgroundcolor
+}
+
+
+
+\title{\textit{MCXplore}: An Automated Framework for Validating Memory Controller
+Designs}
+\author{Mohamed Hassan and Hiren Patel}
+\date{version1.0}
+ 
+\begin{document}
+ 
+\maketitle
+ 
+\tableofcontents
+ 
+\input{introduction}
+\input{install} 
+\input{usage}
+ 
+\input{configuration}
+
+
+\input{flow} 
+
+
+\input{dir}
+
+\input{TL}
+\input{example}
+\input{test_suites}
+
+\input{citation}
+\end{document}
+

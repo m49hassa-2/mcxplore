@@ -1,0 +1,43 @@
+\externaldocument{configuration_tbl}
+\externaldocument{flow}
+\externaldocument{TL}
+\section{Introduction}
+\textit{MCXplore} is an automation tool that generates tests to validate the memory system and evaluate its performance. 
+The novel observation behind \textit{MCXplore} is the following. 
+Regardless of various policies proposed for the memory system, the test pattern is still the same. 
+This test pattern consists of a sequence of memory requests. 
+Each request has three major components: the address, the transaction type (whether read or write), and the transaction size (the number of bytes to transfer). 
+Based on this observation, instead of building a validation framework per memory policy, \textit{MCXplore} relies in the input test pattern to validate any memory policy. 
+\textit{MCXplore} has two modes of operation: non model checking mode and model-checking mode.
+\subsection{Non model checking mode}
+In the first one, the user configures a set of parameters to generate the test that has the desired properties. 
+These parameters represent the pattern required for the address and type of transactions in the test. 
+This mode is suitable for validating common memory controller aspects such as:
+\begin{enumerate}
+\item Common page policies such as close-, open- and adaptive-page policies. 
+
+\item Common address mapping schemes such as traditional address mappings with any segment order. For example, CH:RW:RNK:BNK:CL, CH:RW:BNK,RNK,CL, ..., etc. 
+It is also suitable for non traditional mappings such as XOR address mapping, where bank bits are XORed with low-significant row bits. 
+
+\end{enumerate}  
+
+This mode has a set of predefined-- yet expandable-- patterns for each of the address segments as well as the transaction type. 
+We tabulate currently implemented patterns in Table~\ref{tb:config_noMChk}. 
+Although this model is easy to use, it does not necessarily cover the whole state space of the test pattern. 
+%Consequently, we propose the second mode. 
+
+To use this mode, the user does not need to specify any model to the tool as this mode is the default for \textit{MCXplore}. 
+Alternatively, the user can specify this mode by setting the -m flag to \textbf{noMChk}. 
+As the flow diagram in Figure~\ref{fig:flow} illustrates, the main script for this mode is \textit{\textbf{MCXplore\_noMChk.pl}}.
+
+
+
+\subsection{Model Checking mode}
+The second mode leverages model checking capabilities to cover the state space of the memory input test. 
+Model checking automates the state-space exploration of the test generation,
+and provides a formal methodology to define test properties.
+We create two abstract models to express the stimulus test of the MC: a request interrelation model, \textbf{REQmdl}, and a command interaction model, \textbf{CMDmdl}, and we encode them as FSMs in the NuSMV model checker. The two NuSMV models are in \textbf{\textit{CMDmdl.smv}} and \textbf{\textit{REQmdl.smv}} under the \textbf{\textit{\textbackslash Models}} directory, respectively. 
+the user is able to encode test properties as specifications expressed in temporal logic formulas. 
+Formulas are negated such that they are true if required test properties do not exist. 
+For examples of these formulas, see Section~\ref{sec:TL}.
+As the flow diagram in Figure~\ref{fig:flow} illustrates, the main two script for these  two models are \textit{\textbf{MCXplore\_REQmdl.sh}} and \textit{\textbf{MCXplore\_CMDmdl.sh}}, respectively.

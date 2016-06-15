@@ -1,0 +1,66 @@
+\section{Temporal Logic Specifications}\label{sec:TL}
+
+NuSMV model checker allows for specifications expressed in Linear Temporal Logic (LTL). 
+Typical LTL operations we use in \textit{MCXplore} are: \\
+
+\begin{tabular}{|l|l|}
+\hline
+\textbf{F p} & Condition p holds in one of the future time instants\\
+
+\textbf{G p} & Condition p holds in all of the future time instants\\
+
+\textbf{p U q} & ondition p holds until a state is reached where condition q holds\\
+
+\textbf{X p} & condition p is true in the next state\\
+\hline
+\end{tabular}\\
+
+To help the user in properly setting the specifications, we accompany \textit{MCXplore} with a wide set of specifications for both the command interaction and the request interrelation models. 
+Below are some examples of these specifications and their explanation. 
+It is worth noting that all properties are negated such that the model checker produces the path, where this property holds.\\ 
+
+\subsection{LTL specification examples for the request interrelation model}
+\begin{enumerate}[leftmargin=*]
+\item A test with $40\%$ bank interleaving and $20\%$ row locality:
+\begin{lstlisting}[language=bash]
+LTLSPEC G !(total_hit=2 & total_bank_interleave=4 & total_requests=10)
+\end{lstlisting} 
+
+\item A test with $34$ requests, all of them targeting same bank. 
+Requests $1$ to $17$ target the same row, say $RW_1$. 
+Requests $18$ to $34$ target the same row, say $RW_2$, which is different from $RW_1$, $RW_1 \neq RW_2$. 
+This test can be used to test the adaptive page policy and First-Ready First-Come-First-Serve (FR-FCFS) arbitration with threshold as we illustrate in the DATE paper. 
+
+\begin{lstlisting}[language=bash]
+LTLSPEC G (consecutive_hit=16  -> ! F (total_bank_interleave=0 & total_
+           requests=34 & consecutive_hit=16 & total_hit=32))
+\end{lstlisting} 
+\end{enumerate} 
+
+
+\subsection{LTL specification examples for the command interaction model} 
+
+The command interaction model is specifically useful for validating the correctness of the timing constraints and verifying that no timing violations occur due to any miss match between the memory controller and the DRAM. 
+We refer the user to our DATE paper for more details about the command interaction model.
+
+\begin{enumerate}[leftmargin=*]
+\item Testing the Read-To-Precharge ($tRTP$) constraint. 
+the intuition behind this specification is to make sure that the test sequence highlights the effect for $tRTP$ on the memory utilization. 
+To assure this, the number of read commands has to be larger enough to subsumes the effect of the $tRAS$ constraint between the ACT command and the corresponding PRE command. 
+The specification also ensures that all requests target the same bank by asserting that the number of read commands to a different bank or rank is zero. 
+\begin{lstlisting}[language=bash]
+G ! (((value_READ_TO_PRE_DELAY * num_READ_TO_PRE_DELAY + num_tCCD *
+ value_tCCD + value_tRCD) > (value_tRAS)) & (num_READ_TO_PRE_DELAY > 0)
+  & (num_Rx_d=0) & (num_Rd_s=0))
+\end{lstlisting} 
+
+\item Testing the CAS-to-CAS ($tCCD$) constraint. 
+This specification creates requests targeting same bank and row. Hence, all requests except the first one will consist of a read command only. 
+Each read command is separated by $tCCD$ cycles from the previous one. 
+
+
+\begin{lstlisting}[language=bash]
+G ! ((num_requests=50) & (num_tCCD=49) & ((num_tRL=1)|(num_tWL=1)) &
+(num_tBUS=1) & (num_Rx_d=0))
+\end{lstlisting} 
+\end{enumerate} 

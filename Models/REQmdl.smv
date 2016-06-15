@@ -1,0 +1,190 @@
+MODULE main
+VAR
+	max:10000..10000;
+	total_requests:0..max;
+  row: {same,diff};
+  bank: {same,diff};
+  rank: {same,diff};
+  channel: {same,diff};
+  column: {same,diff};
+---------------------------------------
+  consecutive_hit : 0..max;
+  consecutive_conflict: 0..max;
+  consecutive_bank_interleave : 0..max;
+	consecutive_same_bank: 0..max;
+  consecutive_rank_interleave : 0..max;
+	consecutive_same_rank: 0..max;
+  consecutive_channel_interleave : 0..max;
+	consecutive_same_channel: 0..max;
+  consecutive_column_interleave : 0..max;
+	consecutive_same_column: 0..max;
+---------------------------------------
+  total_hit : 0..max;	
+	total_bank_interleave: 0..max;
+	total_rank_interleave: 0..max;
+	total_channel_interleave: 0..max;
+	total_column_interleave: 0..max;
+---------------------------------------
+	bool_same_row: boolean;
+	bool_same_bank: boolean;
+	bool_same_rank: boolean;
+	bool_same_channel: boolean;
+	bool_same_column: boolean;
+
+---------------------------------------
+---------------------------------------
+ASSIGN
+
+ init(total_requests) := 1;
+
+
+  init(row) := same;
+  init(bank) := same;
+  init(rank) := same;
+  init(channel) := same;
+  init(column) := same;
+---------------------------------------
+  init(consecutive_hit) := 0;
+  init(consecutive_conflict) := 0;
+  init(consecutive_bank_interleave) := 0;
+  init(consecutive_same_bank) := 0;
+  init(consecutive_rank_interleave) := 0;
+  init(consecutive_same_rank) := 0;
+  init(consecutive_channel_interleave) := 0;
+  init(consecutive_same_channel) := 0;
+  init(consecutive_column_interleave) := 0;
+  init(consecutive_same_column) := 0;
+---------------------------------------
+  init(total_hit) := 0;
+  init(total_bank_interleave) := 0;
+  init(total_rank_interleave) := 0;
+  init(total_channel_interleave) := 0;
+  init(total_column_interleave) := 0;
+---------------------------------------
+
+
+  next(total_requests) := ((total_requests+1) mod max);
+
+
+-----------------------------------------
+  next(row) := case
+                   bool_same_row : same;
+                   TRUE : diff;
+                 esac;
+
+  next(bank) := case
+                   bool_same_bank : same;
+                   TRUE : diff;
+                 esac;
+
+
+  next(rank) := case
+                   bool_same_rank : same;
+                   TRUE : diff;
+                 esac;
+
+
+  next(channel) := case
+                   bool_same_channel : same;
+                   TRUE : diff;
+                 esac;
+
+
+  next(column) := case
+                   bool_same_column : same;
+                   TRUE : diff;
+                 esac;
+---------------------------------------
+
+  next(total_hit) := case
+                   bool_same_row: ((total_hit+1) mod max);
+                   TRUE : total_hit;
+                 esac;
+
+  next(total_bank_interleave) := case
+                   bool_same_bank : total_bank_interleave;
+                   TRUE : ((total_bank_interleave+1) mod max);
+                 esac;
+
+
+   next(total_rank_interleave) := case
+                   bool_same_rank : total_rank_interleave;
+                   TRUE : ((total_rank_interleave+1) mod max);
+                 esac;
+
+  next(total_channel_interleave) := case
+                   bool_same_channel : total_channel_interleave;
+                   TRUE : ((total_channel_interleave+1) mod max);
+                 esac;
+
+  next(total_column_interleave) := case
+                   bool_same_column : total_column_interleave;
+                   TRUE : ((total_column_interleave+1) mod max);
+                 esac;
+
+---------------------------------------
+ next(consecutive_hit) := case
+                   bool_same_row : ((consecutive_hit+1) mod max);
+                   TRUE : 0;
+                 esac;
+
+ next(consecutive_conflict) := case
+                   bool_same_row : 0;
+                   TRUE : ((consecutive_conflict) mod max);
+                 esac;
+
+  next(consecutive_bank_interleave) := case
+                   bool_same_bank :0;
+                   TRUE : ((consecutive_bank_interleave+1) mod max);
+                 esac;
+
+  next(consecutive_rank_interleave) := case
+                   bool_same_rank : 0;
+                   TRUE : ((consecutive_rank_interleave+1) mod max);
+                 esac;
+
+  next(consecutive_channel_interleave) := case
+                   bool_same_channel : 0;
+                   TRUE : ((consecutive_channel_interleave+1) mod max);
+                 esac;
+
+  next(consecutive_column_interleave) := case
+                   bool_same_column : 0;
+                   TRUE : ((consecutive_column_interleave+1) mod max);
+                 esac;
+
+
+ next(consecutive_same_bank) := case
+                   bool_same_bank  : ((consecutive_same_bank+1) mod max);
+                   TRUE : 0;
+                 esac;
+
+next(consecutive_same_rank) := case
+                   bool_same_rank : ((consecutive_same_rank+1) mod max);
+                   TRUE : 0;
+                 esac;
+
+
+next(consecutive_same_channel) := case
+                   bool_same_channel : ((consecutive_same_channel+1) mod max);
+                   TRUE : 0;
+                 esac;
+
+
+next(consecutive_same_column) := case
+                   bool_same_column : ((consecutive_same_column+1) mod max);
+                   TRUE : 0;
+                 esac;
+
+-----------------------------------------------------------------
+
+
+
+--SPEC
+-- AG(row = same & bank = same & rank = same & channel = same & column = diff)
+
+LTLSPEC G !(total_hit=2 & total_bank_interleave=4 & total_requests=10) -- locality=20% interleave=40%
+--LTLSPEC G !(total_hit=30 & total_bank_interleave=0 & total_requests=32 & consecutive_hit=15 & ((consecutive_hit=15 -> X consecutive_hit=0) ->F consecutive_hit=15)) -- locality=20% interleave=40%
+--LTLSPEC G (consecutive_hit=16  -> ! F (total_bank_interleave=0 & total_requests=34 & consecutive_hit=16 & total_hit=32)) -- FRFCFS threshold=16
+--LTLSPEC G (((total_requests=6 & total_hit=0 & total_bank_interleave=0)-> ! F (total_requests=10 & total_hit=4 & total_bank_interleave=4)))
+ -- & (total_requests=10 & total_hit=6 & total_bank_interleave=4))

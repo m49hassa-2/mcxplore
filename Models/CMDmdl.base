@@ -1,0 +1,259 @@
+
+
+	
+
+
+	max:10000..10000;
+	num_requests:0..max;
+	num_tRP:0..max;
+	num_tCCD:0..max;
+	num_tRAS:0..max;
+	num_tRC:0..max;
+ 	num_tRCD:0..max;
+ 	num_tRRD:0..max;
+ 	num_tFAW:0..max;
+ 	num_tRL:0..max;
+	num_tWL:0..max;
+	num_tRTP:0..max;
+	num_tWR:0..max;
+ 	num_tWTR:0..max;
+ 	num_tRTRS:0..max;
+ 	num_tBUS:0..max;
+	num_Rd_s:0..max;
+	num_Rx_d:0..max;
+ 	num_READ_TO_WRITE_DELAY:0..max;
+ 	num_RANK_TO_RANK_DELAY:0..max;
+ 	num_READ_TO_PRE_DELAY:0..max;
+ 	num_WRITE_TO_READ_DELAY_B:0..max;
+ 	num_WRITE_TO_READ_DELAY_R:0..max;
+ 	num_WRITE_TO_PRE_DELAY:0..max;
+
+
+
+
+
+	activated_banks:0..4;
+  command: {As_s,Ad_s,Ax_d,Rs_s,Rd_s,Rx_d,Ws_s,Wd_s,Wx_d,P,Ds,De,UNKOWN};
+	constraint: {tRP,tCCD,tRAS,tRC,tRCD,tRRD,tFAW,tRL,tWL,tRTP,tWR,tWTR,tRTRS,tBUS,READ_TO_WRITE_DELAY,RANK_TO_RANK_DELAY,READ_TO_PRE_DELAY,WRITE_TO_READ_DELAY_B,WRITE_TO_READ_DELAY_R,WRITE_TO_PRE_DELAY,UNKOWN};
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------
+ASSIGN
+
+
+	init(num_tRP) := 0;
+	init(num_tCCD) := 0;
+	init(num_tRAS) := 0;
+	init(num_tRC) := 0;
+ 	init(num_tRCD) := 0;
+ 	init(num_tRRD) := 0;
+ 	init(num_tFAW) := 0;
+ 	init(num_tRL) := 0;
+	init(num_tWL) := 0;
+	init(num_tRTP) := 0;
+	init(num_tWR) := 0;
+ 	init(num_tWTR) := 0;
+ 	init(num_tRTRS) := 0;
+ 	init(num_tBUS) := 0;
+ 	init(num_READ_TO_WRITE_DELAY) := 0;
+ 	init(num_RANK_TO_RANK_DELAY) := 0;
+ 	init(num_READ_TO_PRE_DELAY) := 0;
+ 	init(num_WRITE_TO_READ_DELAY_B) := 0;
+ 	init(num_WRITE_TO_READ_DELAY_R) := 0;
+ 	init(num_WRITE_TO_PRE_DELAY) := 0;
+
+
+
+  init(command) := As_s;
+  init(num_requests) := 0;
+  init(activated_banks) := 0;
+	init(num_Rd_s) := 0;
+	init(num_Rx_d) := 0;
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+  next(constraint) := case
+                   ((command = As_s) | (command = Ad_s) | (command = Ax_d)) & (next(command)=As_s) : tRC;
+                   ((command = As_s) | (command = Ad_s) | (command = Ax_d)) & ((next(command)=Rs_s) | (next(command)=Ws_s)) : tRCD;
+                   ((command = As_s) | (command = Ad_s) | (command = Ax_d)) & (next(command)=P) : tRAS;
+                   ((command = As_s) | (command = Ad_s) | (command = Ax_d)) & (next(command)=Ad_s) : tRRD;
+                   ((command = As_s) | (command = Ad_s) | (command = Ax_d)) & (activated_banks=4) & (next(command)=Ad_s) : tFAW;
+                   ((command = Rs_s) | (command = Rd_s) | (command = Rx_d) ) & (next(command)=Ds) : tRL;
+                   ((command = Ws_s) | (command = Wd_s) | (command = Wx_d) ) & (next(command)=Ds) : tWL;
+                   (command = Ds) & (next(command)=De) : tBUS;
+                   ((((command = Rs_s) | (command = Rd_s) | (command = Rx_d) ) & ((next(command)=Rs_s) | (next(command)=Rd_s))) | (((command = Ws_s) | (command = Wd_s) | (command = Wx_d) ) & ((next(command)=Ws_s)| (next(command)=Wd_s)))): tCCD;
+                   ((((command = Rs_s) | (command = Rd_s) | (command = Rx_d) ) & (next(command)=Rx_d)) | (((command = Ws_s) | (command = Wd_s) | (command = Wx_d) ) & (next(command)=Wx_d))):RANK_TO_RANK_DELAY ;
+ 									 (((command = Rs_s) | (command = Rd_s) | (command = Rx_d) ) & ((next(command)=Wx_d) | (next(command)=Ws_s) | (next(command)=Wd_s))) : READ_TO_WRITE_DELAY;
+							 		 (((command = Ws_s) | (command = Wd_s) | (command = Wx_d) ) & (next(command)=Rx_d)): WRITE_TO_READ_DELAY_R;
+							 		 (((command = Ws_s) | (command = Wd_s) | (command = Wx_d) ) & ((next(command)=Rs_s)|(next(command)=Rd_s))): WRITE_TO_READ_DELAY_B;
+                   ((command = Rs_s) | (command = Rd_s) | (command = Rx_d)) & (next(command)=P) : READ_TO_PRE_DELAY;
+                   ((command = Ws_s) | (command = Wd_s) | (command = Wx_d)) & (next(command)=P) : WRITE_TO_PRE_DELAY;
+                   ((command = P)  & (next(command)=As_s)) : tRP;
+									 ((command=Ds) & (next(command)=De)): tBUS;
+
+                   TRUE : UNKOWN;
+                 esac;
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+  next(num_requests) := case
+                   ((next(command) = Rs_s) | (next(command) = Rd_s) | (next(command) = Rx_d) | (next(command) = Ws_s) | (next(command) = Wd_s) | (next(command) = Wx_d)): ((num_requests+1) mod max);
+                   TRUE : num_requests;
+                 esac;
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+  next(activated_banks) := case
+                  (next(command) = Ad_s) : (((activated_banks+1) mod 5));
+                   TRUE : activated_banks;
+                 esac;
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+  next(num_Rd_s) := case
+                  (next(command) = Rd_s) : num_Rd_s+1;
+                   TRUE : num_Rd_s;
+                 esac;
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+  next(num_Rx_d) := case
+                  (next(command) = Rx_d) : num_Rx_d+1;
+                   TRUE : num_Rx_d;
+                 esac;
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ next(command) := case
+                   ((command = As_s) | (command = Ad_s) | (command = Ax_d)): {Ad_s,Ax_d,Rs_s,Ws_s};
+									 (command = P): {As_s,Ad_s,Ax_d,Rd_s,Rx_d,Wd_s,Wx_d};
+									 ((command = Rs_s) | (command = Rd_s) | (command = Rx_d) | (command = Ws_s) | (command = Wd_s) | (command = Wx_d)): {P,Ad_s,Ax_d,Rs_s,Rd_s,Rx_d,Ws_s,Wd_s,Wx_d,Ds};
+									 (command = Ds): {De};
+                   TRUE : UNKOWN;
+                 esac;
+
+
+-------------------------------------------------------------------------------------
+  next(num_tRP) := case
+                   (next(constraint) = tRP): ((num_tRP+1) mod max);
+                   TRUE : num_tRP;
+                 esac;
+
+
+  next(num_tCCD) := case
+                   (next(constraint) = tCCD): ((num_tCCD+1) mod max);
+                   TRUE : num_tCCD;
+                 esac;
+
+
+  next(num_tRAS) := case
+                   (next(constraint) = tRAS): ((num_tRAS+1) mod max);
+                   TRUE : num_tRAS;
+                 esac;
+
+
+  next(num_tRC) := case
+                   (next(constraint) = tRC): ((num_tRC+1) mod max);
+                   TRUE : num_tRC;
+                 esac;
+
+
+  next(num_tRCD) := case
+                   (next(constraint) = tRCD): ((num_tRCD+1) mod max);
+                   TRUE : num_tRCD;
+                 esac;
+
+
+  next(num_tRRD) := case
+                   (next(constraint) = tRRD): ((num_tRRD+1) mod max);
+                   TRUE : num_tRRD;
+                 esac;
+
+  next(num_tFAW) := case
+                   (next(constraint) = tFAW): ((num_tFAW+1) mod max);
+                   TRUE : num_tFAW;
+                 esac;
+
+
+  next(num_tRL) := case
+                   (next(constraint) = tRL): ((num_tRL+1) mod max);
+                   TRUE : num_tRL;
+                 esac;
+
+
+  next(num_tWL) := case
+                   (next(constraint) = tWL): ((num_tWL+1) mod max);
+                   TRUE : num_tWL;
+                 esac;
+
+
+  next(num_tRTP) := case
+                   (next(constraint) = tRTP): ((num_tRTP+1) mod max);
+                   TRUE : num_tRTP;
+                 esac;
+
+  next(num_tWR) := case
+                   (next(constraint) = tWR): ((num_tWR+1) mod max);
+                   TRUE : num_tWR;
+                 esac;
+
+  next(num_tWTR) := case
+                   (next(constraint) = tWTR): ((num_tWTR+1) mod max);
+                   TRUE : num_tWTR;
+                 esac;
+
+  next(num_tRTRS) := case
+                   (next(constraint) = tRTRS): ((num_tRTRS+1) mod max);
+                   TRUE : num_tRTRS;
+                 esac;
+
+  next(num_tBUS) := case
+                   (next(constraint) = tBUS): ((num_tBUS+1) mod max);
+                   TRUE : num_tBUS;
+                 esac;
+
+  next(num_READ_TO_WRITE_DELAY) := case
+                   (next(constraint) = READ_TO_WRITE_DELAY): ((num_READ_TO_WRITE_DELAY+1) mod max);
+                   TRUE : num_READ_TO_WRITE_DELAY;
+                 esac;
+
+  next(num_RANK_TO_RANK_DELAY) := case
+                   (next(constraint) = RANK_TO_RANK_DELAY): ((num_RANK_TO_RANK_DELAY+1) mod max);
+                   TRUE : num_RANK_TO_RANK_DELAY;
+                 esac;
+
+  next(num_READ_TO_PRE_DELAY) := case
+                   (next(constraint) = READ_TO_PRE_DELAY): ((num_READ_TO_PRE_DELAY+1) mod max);
+                   TRUE : num_READ_TO_PRE_DELAY;
+                 esac;
+
+  next(num_WRITE_TO_READ_DELAY_B) := case
+                   (next(constraint) = WRITE_TO_READ_DELAY_B): ((num_WRITE_TO_READ_DELAY_B+1) mod max);
+                   TRUE : num_WRITE_TO_READ_DELAY_B;
+                 esac;
+
+  next(num_WRITE_TO_READ_DELAY_R) := case
+                   (next(constraint) = WRITE_TO_READ_DELAY_R): ((num_WRITE_TO_READ_DELAY_R+1) mod max);
+                   TRUE : num_WRITE_TO_READ_DELAY_R;
+                 esac;
+
+  next(num_WRITE_TO_PRE_DELAY) := case
+                   (next(constraint) = WRITE_TO_PRE_DELAY): ((num_WRITE_TO_PRE_DELAY+1) mod max);
+                   TRUE : num_WRITE_TO_PRE_DELAY;
+                 esac;
+
+
+----------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+

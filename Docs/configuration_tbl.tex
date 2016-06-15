@@ -1,0 +1,82 @@
+\begin{table*}[ht] 
+\scriptsize
+\centering
+\caption{Model-independent configuration parameters.\label{tb:config}}
+\begin{tabular}{|l|p{1.2cm}|p{9cm}|p{5cm}|}
+  \hline
+  Parameter & \multicolumn{2}{l|}{Possible Values} & Description \\
+  \hline
+number\_of\_requests &  \multicolumn{2}{l|}{Any positive integer} & total number of requests in the test\\ 
+\hline
+\multirow{2}{*}{transaction\_size} & \multicolumn{2}{l|}{Any positive integer} & {Number of bytes transferred per memory transaction} \\
+& \multicolumn{2}{l|}{For instance, if it is a cache line size, it is 64B or 128B} &\\
+\hline
+\end{tabular}
+\label{tb:vars}
+\end{table*}
+
+\begin{table*}[ht] 
+\scriptsize
+\centering
+\caption{Test configuration parameters for noMChk mode.\label{tb:config_noMChk}}
+\begin{tabular}{|l|p{1.2cm}|p{7cm}|p{4cm}|}
+  \hline
+  Parameter & \multicolumn{2}{l|}{Possible Values} & Description \\
+  \hline
+\multirow{5}{*}{transaction\_pattern} &  rd& All requests are read & \multirow{5}{*}{Pattern of request type}\\
+
+&wr& All requests are write&\\
+&sw& The test alternates between reads and writes (rd wr rd wr ....)&\\
+
+&sw\%& User configures the percentage of switching by another parameter(switch)&\\
+&random& The type of each request is randomly selected&\\
+\hline
+switch & \multicolumn{2}{l|}{An integer between $0$ and $100$} & The switching \%  between reads and writes in the test\\
+%address\_pattern & X
+\hline
+ \multirow{6}{*}{row\_pattern} &hit& All requests target the same row& \multirow{6}{*}{The row (page) pattern of the test}\\
+ &conflict& Each two consecutive requests target different rows&\\
+ &random& Row bits of the request is chosen randomly&\\
+ &custom\_hit& User configures the number of row hits by another parameter(num\_hits) &\\
+ &linear& Each request target row $rw+1$, where $rw$ is the row of the precedent request&\\
+ &locality\%&User configures the percentage of row locality by another parameter(locality)&\\
+ \hline
+ num\_hits & \multicolumn{2}{l|}{any non-negative integer such that num\_hits $<$ number\_of\_requests} & The number of row hits in the test  \\
+ \hline
+ locality & \multicolumn{2}{l|}{An integer between $0$ and $100$} &  The row locality \% in the test\\
+ 
+ \hline
+ 
+ \multirow{5}{*}{rank\_pattern} & same & all requests target same rank & The rank pattern of the test\\
+ 
+ &interleave&Each two consecutive requests target different ranks&\\
+ &random&Rank bits of the request is chosen randomly&\\
+ &interleave\%&User configures the percentage of rank interleaving by another parameter(RankInterleave)&\\
+ &linear&Each request target rank $rnk+1$, where $rnk$ is the rank of the precedent request&\\
+ 
+ \hline
+ RankInterleave & \multicolumn{2}{l|}{An integer between $0$ and $100$} & The rank interleaving \%  in the test\\
+ 
+ \hline
+ 
+bank\_pattern &  \multicolumn{2}{l|}{Same as rank\_inteleave values} & The bank pattern of the test\\
+
+ \hline
+ BankInterleave & \multicolumn{2}{l|}{An integer between $0$ and $100$} & The bank interleaving \%  in the test\\
+  \hline
+ 
+channel\_pattern &  \multicolumn{2}{l|}{Same as rank\_inteleave values} & The channel pattern of the test\\
+
+ \hline
+ ChannelInterleave & \multicolumn{2}{l|}{An integer between $0$ and $100$} & The channel interleaving \% in the test\\
+ 
+%channel\_pattern & X
+%column\_pattern & interleave
+%
+%BankInterleave & 50
+
+%ChannelInterleave & 50
+  \hline
+\end{tabular}
+\label{tb:vars}
+\end{table*}

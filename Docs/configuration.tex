@@ -1,0 +1,25 @@
+\section{Configurations}
+
+There are four categories of configuration parameters. 
+the user can configure any of these parameters by modifying the \textbf{\textit{configuration.data}} file. 
+
+\begin{enumerate}
+\item Parameters that configure the syntax of the output test. 
+Table~\ref{tb:syntax} tabulates these parameters with their explanation and options. 
+The user can modify these parameters or add a different syntax by expanding the \textit{\textbf{GenerateTest.pl}} file. 
+\input{syntax_tbl}
+\item Parameters that configure test semantics but are model-independent. 
+This category includes two parameters: the number of requests in the test and the transaction size as Table~\ref{tb:config_noMChk} explains.
+\input{configuration_tbl}
+\item Pattern configuration parameters for the no model checking mode. 
+Table~\ref{tb:config} illustrates these parameters, their possible values and their description. 
+
+\item Address mapping parameters, which decides the bits assigned to each address segment (Channel, rank, bank, row and column). 
+\input{addr_mapping_tbl}
+\end{enumerate}
+
+  
+
+
+
+

@@ -1,0 +1,31 @@
+\begin{table*}[ht] 
+\scriptsize
+\centering
+\caption{Address mapping parameters.}
+\begin{tabular}{|l|p{9cm}|p{5cm}|}
+  \hline
+   Parameter & Description & Example\\
+   
+   row\_mask & Mask determines row bits. A bit is $1$ if it is a row bit and $0$ otherwise. & 7FF80000: bits $19$ to $30$ are row bits\\
+   
+\hline
+
+  bank\_mask & Mask determines bank bits. A bit is $1$ if it is a bank bit and $0$ otherwise. & 70000: bits $16$ to $18$ are bank bits\\
+   
+\hline
+
+  rank\_mask & Mask determines rank bits. A bit is $1$ if it is a rank bit and $0$ otherwise. & E000: bits $13$ to $15$ are rank bits\\
+   
+\hline
+
+  column\_mask & Mask determines column bits. A bit is $1$ if it is a column bit and $0$ otherwise. & 1FC0: bits $6$ to $12$ are column bits\\
+   
+\hline
+
+ channel\_mask & Mask determines channel bits. A bit is $1$ if it is a channel bit and $0$ otherwise. & 80000000: bit $31$ is the channel bit\\
+   
+\hline
+
+\end{tabular}
+\label{tb:vars}
+\end{table*}

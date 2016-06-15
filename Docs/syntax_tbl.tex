@@ -1,0 +1,34 @@
+\begin{table*}[ht] 
+\scriptsize
+\centering
+\caption{Test syntax parameters.\label{tb:syntax}}
+\begin{tabular}{|l|p{0.5cm}|p{7cm}|p{5cm}|}
+  \hline
+   Parameter & \multicolumn{2}{l|}{Possible Values} & Description \\
+  \hline
+address\_length & \multicolumn{2}{l|}{Either $32$bits or $64$bits} & Number of address bits\\
+\hline
+
+initial\_address & \multicolumn{2}{l|}{Hex number aligns with the address\_length parameter} & Address of the first request in the test (default is 00000000 for $32$bit address)\\
+\hline
+
+initial\_type & \multicolumn{2}{l|}{Either "read" or "write"} & type the first request in the test\\
+\hline
+
+
+\multirow{4}{*}{syntax} & $11$ & Address\escape{t}Transaction\_size\escape{t}Type (tab separated). Example: 0x00003F87	64	R & \multirow{4}{*}{syntax of the output test} \\
+
+&$12$ & Address\escape{t}Type (tab separated). Example: 0x00003F8		R&\\
+&$21$ & Address\escape{s}Transaction\_size\escape{s}Type (space separated). Example: 0x00003F87 64 R&\\
+&$22$ & Address\escape{s}Type (space separated). Example: 0x00003F87 R&\\
+\hline
+
+\multirow{3}{*}{type\_syntax} & $31$ & READ (or WRITE) & \multirow{3}{*}{syntax of the output type} \\
+
+&$32$ & R (or W)&\\
+&$33$ & Read (or Write)&\\
+
+\hline
+\end{tabular}
+\label{tb:vars}
+\end{table*}

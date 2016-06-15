@@ -1,0 +1,47 @@
+\section{Usage}
+
+%run [-m model |[-h]
+%	echo "-m, --model		specify which model to use: \"CMDmdl\" for Model Checking Command model, \"REqmdl\" for Model Checking request model, or \"noMChk\" for the no model checking usage. noMChk is the default"
+%	echo "-o, --out		  specify the output file name of the generated test. results/[model]/Test.trc is the default"
+%	echo "-h, --help		prints out this usage message"          
+The usage of \textit{MCXplore} is as simple as invoking the \textit{\textbf{MCXplore.sh}} script as follows:
+\begin{lstlisting}[language=bash]
+./ mcxplore [[-m model] [-o output_file] [-t DRAM_timing_file] [-s LTL_specs_file] |[-h]]
+
+\end{lstlisting}
+Table~\ref{tb:usage} illustrates the possible options and their description.
+\begin{table}[h] 
+\scriptsize
+\centering
+\caption{Usage arguments.\label{tb:usage}}
+\begin{tabular}{|l|l|l|p{5cm}|p{5cm}|}
+  \hline
+   Short flag &  Long flag & \multicolumn{2}{l|}{Options} & Description\\
+   \hline
+  \multirow{3}{*}{-m} & \multirow{3}{*}{-{}-model} & CMDmdl & Model Checking Command model &   \multirow{3}{*}{Specify which model to use}\\ 
+  
+  & & REQmdl & Model Checking request model &\\
+  & &noMChk& no model checking usage. noMChk is the default&\\
+      
+\hline
+
+
+-o & -{}-out& \multicolumn{2}{l|}{Any valid file name}&specify the output file name of the generated test. results/[model]/Test.trc is the default\\
+
+\hline
+
+
+-t &  -{}-DDrTiming & \multicolumn{2}{l|}{Any valid file name} & specify the input timing file with DDR constraints. DDrTimings/DDR3\_1600.tim is the default\\
+
+\hline
+
+-s &  -{}-Spec &  \multicolumn{2}{l|}{Any valid file name} &	specify the input LTL specification file that models the test plan. LTLspec/CMDmdl.spec is the default\\
+
+\hline
+
+-h & -{}-help & \multicolumn{2}{l|}{No options}&prints out this usage message\\
+
+\hline
+\end{tabular}
+\label{tb:vars}
+\end{table}

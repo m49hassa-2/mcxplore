@@ -1,0 +1,357 @@
+\section{Complete Examples}
+\subsection{Request Model Example}
+Consider the test with $40\%$ bank interleaving and $20\%$ row locality, with the following LTL specification:
+\begin{lstlisting}[language=bash]
+LTLSPEC G !(total_hit=2 & total_bank_interleave=4 & total_requests=10)
+\end{lstlisting} 
+running the \textit{MCxplore} flow for this test invokes the NuSMV model checker, which produces an intermediate file called \textbf{\textit{REQmdl.bmc}}. 
+The contents of the  \textbf{\textit{REQmdl.bmc}} are shown below. 
+\begin{lstlisting}[language=bash]
+*** This is NuSMV 2.5.4 (compiled on Fri Oct 28 13:48:41 UTC 2011)
+*** Enabled addons are: compass 
+*** For more information on NuSMV see <http://nusmv.fbk.eu>
+*** or email to <nusmv-users@list.fbk.eu>.
+*** Please report bugs to <nusmv-users@fbk.eu>
+
+*** Copyright (c) 2010, Fondazione Bruno Kessler
+
+*** This version of NuSMV is linked to the CUDD library version 2.4.1
+*** Copyright (c) 1995-2004, Regents of the University of Colorado
+
+*** This version of NuSMV is linked to the MiniSat SAT solver. 
+*** See http://www.cs.chalmers.se/Cs/Research/FormalMethods/MiniSat
+*** Copyright (c) 2003-2005, Niklas Een, Niklas Sorensson 
+
+WARNING *** This version of NuSMV is linked to the zchaff SAT         ***
+WARNING *** solver (see http://www.princeton.edu/~chaff/zchaff.html). ***
+WARNING *** Zchaff is used in Bounded Model Checking when the         ***
+WARNING *** system variable "sat_solver" is set to "zchaff".          ***
+WARNING *** Notice that zchaff is for non-commercial purposes only.   ***
+WARNING *** NO COMMERCIAL USE OF ZCHAFF IS ALLOWED WITHOUT WRITTEN    ***
+WARNING *** PERMISSION FROM PRINCETON UNIVERSITY.                     ***
+WARNING *** Please contact Sharad Malik (malik@ee.princeton.edu)      ***
+WARNING *** for details.                                              ***
+
+WARNING: single-value variable 'max' has been stored as a constant
+-- no counterexample found with bound 0
+-- no counterexample found with bound 1
+-- no counterexample found with bound 2
+-- no counterexample found with bound 3
+-- no counterexample found with bound 4
+-- no counterexample found with bound 5
+-- no counterexample found with bound 6
+-- no counterexample found with bound 7
+-- no counterexample found with bound 8
+-- specification  G !((total_hit = 2 & total_bank_interleave = 4) &
+-- total_requests = 10)    is false
+-- as demonstrated by the following execution sequence
+Trace Description: BMC Counterexample 
+Trace Type: Counterexample 
+-> State: 1.1 <-
+  total_requests = 1
+  row = same
+  bank = same
+  rank = same
+  channel = same
+  column = same
+  consecutive_hit = 0
+  consecutive_conflict = 0
+  consecutive_bank_interleave = 0
+  consecutive_same_bank = 0
+  consecutive_rank_interleave = 0
+  consecutive_same_rank = 0
+  consecutive_channel_interleave = 0
+  consecutive_same_channel = 0
+  consecutive_column_interleave = 0
+  consecutive_same_column = 0
+  total_hit = 0
+  total_bank_interleave = 0
+  total_rank_interleave = 0
+  total_channel_interleave = 0
+  total_column_interleave = 0
+  bool_same_row = FALSE
+  bool_same_bank = TRUE
+  bool_same_rank = FALSE
+  bool_same_channel = TRUE
+  bool_same_column = TRUE
+  max = 10000
+-> State: 1.2 <-
+  total_requests = 2
+  row = diff
+  rank = diff
+  consecutive_same_bank = 1
+  consecutive_rank_interleave = 1
+  consecutive_same_channel = 1
+  consecutive_same_column = 1
+  total_rank_interleave = 1
+-> State: 1.3 <-
+  total_requests = 3
+  consecutive_same_bank = 2
+  consecutive_rank_interleave = 2
+  consecutive_same_channel = 2
+  consecutive_same_column = 2
+  total_rank_interleave = 2
+-> State: 1.4 <-
+  total_requests = 4
+  consecutive_same_bank = 3
+  consecutive_rank_interleave = 3
+  consecutive_same_channel = 3
+  consecutive_same_column = 3
+  total_rank_interleave = 3
+  bool_same_bank = FALSE
+-> State: 1.5 <-
+  total_requests = 5
+  bank = diff
+  consecutive_bank_interleave = 1
+  consecutive_same_bank = 0
+  consecutive_rank_interleave = 4
+  consecutive_same_channel = 4
+  consecutive_same_column = 4
+  total_bank_interleave = 1
+  total_rank_interleave = 4
+  bool_same_rank = TRUE
+-> State: 1.6 <-
+  total_requests = 6
+  rank = same
+  consecutive_bank_interleave = 2
+  consecutive_rank_interleave = 0
+  consecutive_same_rank = 1
+  consecutive_same_channel = 5
+  consecutive_same_column = 5
+  total_bank_interleave = 2
+-> State: 1.7 <-
+  total_requests = 7
+  consecutive_bank_interleave = 3
+  consecutive_same_rank = 2
+  consecutive_same_channel = 6
+  consecutive_same_column = 6
+  total_bank_interleave = 3
+  bool_same_rank = FALSE
+  bool_same_channel = FALSE
+  bool_same_column = FALSE
+-> State: 1.8 <-
+  total_requests = 8
+  rank = diff
+  channel = diff
+  column = diff
+  consecutive_bank_interleave = 4
+  consecutive_rank_interleave = 1
+  consecutive_same_rank = 0
+  consecutive_channel_interleave = 1
+  consecutive_same_channel = 0
+  consecutive_column_interleave = 1
+  consecutive_same_column = 0
+  total_bank_interleave = 4
+  total_rank_interleave = 5
+  total_channel_interleave = 1
+  total_column_interleave = 1
+  bool_same_row = TRUE
+  bool_same_bank = TRUE
+  bool_same_rank = TRUE
+  bool_same_channel = TRUE
+-> State: 1.9 <-
+  total_requests = 9
+  row = same
+  bank = same
+  rank = same
+  channel = same
+  consecutive_hit = 1
+  consecutive_bank_interleave = 0
+  consecutive_same_bank = 1
+  consecutive_rank_interleave = 0
+  consecutive_same_rank = 1
+  consecutive_channel_interleave = 0
+  consecutive_same_channel = 1
+  consecutive_column_interleave = 2
+  total_hit = 1
+  total_column_interleave = 2
+  bool_same_column = TRUE
+-> State: 1.10 <-
+  total_requests = 10
+  column = same
+  consecutive_hit = 2
+  consecutive_same_bank = 2
+  consecutive_same_rank = 2
+  consecutive_same_channel = 2
+  consecutive_column_interleave = 0
+  consecutive_same_column = 1
+  total_hit = 2
+  bool_same_row = FALSE
+  bool_same_bank = FALSE
+  bool_same_rank = FALSE
+  bool_same_channel = FALSE
+  bool_same_column = FALSE
+\end{lstlisting}
+This specific \textbf{\textit{REQmdl.bmc}} output illustrates that the bounded model checker runs for $10$ states ($0$ to $9$) until it reaches to a counter-example. 
+This is clearly because we set the number of requests in the test to be $10$. 
+Each state represents a unique request. 
+The variables that maintain the same value as the previous state are not shown. 
+For each address segment (row, column, ... etc.), it is either the "\textit{same}" or "\textit{diff}" compared to the previous request. 
+all other variables in each state are counters to keep track of the address pattern. 
+Afterwards, \textbf{\textit{REQmdl\_parser.pl}} parses this file and produces the required output test file as we show below. 
+\begin{lstlisting}[language=bash]
+0x00000000	R
+0x00082000	R
+0x00104000	R
+0x00186000	R
+0x00218000	R
+0x002a8000	R
+0x00338000	R
+0x803ca040	R
+0x803ca080	R
+0x803ca080	R
+\end{lstlisting} 
+
+\subsection{Command Model Example}
+Consider the test required to validate the $tRTP$ timing constraint, with the following LTL specification.
+\begin{lstlisting}[language=bash]
+G ! (((value_READ_TO_PRE_DELAY * num_READ_TO_PRE_DELAY + num_tCCD *
+ value_tCCD + value_tRCD) > (value_tRAS)) & (num_READ_TO_PRE_DELAY > 0)
+  & (num_Rx_d=0) & (num_Rd_s=0))
+\end{lstlisting}
+running the \textit{MCxplore} flow for this test invokes the NuSMV model checker, which produces an intermediate file called \textbf{\textit{CMDmdl.bmc}}. 
+The contents of the  \textbf{\textit{CMDmdl.bmc}} are shown below.
+
+\begin{lstlisting}[language=bash]
+*** This is NuSMV 2.5.4 (compiled on Fri Oct 28 13:48:41 UTC 2011)
+*** Enabled addons are: compass 
+*** For more information on NuSMV see <http://nusmv.fbk.eu>
+*** or email to <nusmv-users@list.fbk.eu>.
+*** Please report bugs to <nusmv-users@fbk.eu>
+
+*** Copyright (c) 2010, Fondazione Bruno Kessler
+
+*** This version of NuSMV is linked to the CUDD library version 2.4.1
+*** Copyright (c) 1995-2004, Regents of the University of Colorado
+
+*** This version of NuSMV is linked to the MiniSat SAT solver. 
+*** See http://www.cs.chalmers.se/Cs/Research/FormalMethods/MiniSat
+*** Copyright (c) 2003-2005, Niklas Een, Niklas Sorensson 
+
+WARNING *** This version of NuSMV is linked to the zchaff SAT         ***
+WARNING *** solver (see http://www.princeton.edu/~chaff/zchaff.html). ***
+WARNING *** Zchaff is used in Bounded Model Checking when the         ***
+WARNING *** system variable "sat_solver" is set to "zchaff".          ***
+WARNING *** Notice that zchaff is for non-commercial purposes only.   ***
+WARNING *** NO COMMERCIAL USE OF ZCHAFF IS ALLOWED WITHOUT WRITTEN    ***
+WARNING *** PERMISSION FROM PRINCETON UNIVERSITY.                     ***
+WARNING *** Please contact Sharad Malik (malik@ee.princeton.edu)      ***
+WARNING *** for details.                                              ***
+
+WARNING: single-value variable 'value_tRP' has been stored as a constant
+WARNING: single-value variable 'value_tCCD' has been stored as a constant
+WARNING: single-value variable 'value_tRAS' has been stored as a constant
+WARNING: single-value variable 'value_tRC' has been stored as a constant
+WARNING: single-value variable 'value_tRCD' has been stored as a constant
+WARNING: single-value variable 'value_tRRD' has been stored as a constant
+WARNING: single-value variable 'value_tFAW' has been stored as a constant
+WARNING: single-value variable 'value_tRL' has been stored as a constant
+WARNING: single-value variable 'value_tWL' has been stored as a constant
+WARNING: single-value variable 'value_tRTP' has been stored as a constant
+WARNING: single-value variable 'value_tWR' has been stored as a constant
+WARNING: single-value variable 'value_tWTR' has been stored as a constant
+WARNING: single-value variable 'value_tRTRS' has been stored as a constant
+WARNING: single-value variable 'value_tBUS' has been stored as a constant
+WARNING: single-value variable 'value_READ_TO_WRITE_DELAY' 
+has been stored as a constant
+WARNING: single-value variable 'value_RANK_TO_RANK_DELAY' 
+has been stored as a constant
+WARNING: single-value variable 'value_READ_TO_PRE_DELAY' 
+has been stored as a constant
+WARNING: single-value variable 'value_WRITE_TO_READ_DELAY_B'
+ has been stored as a constant
+WARNING: single-value variable 'value_WRITE_TO_READ_DELAY_R'
+ has been stored as a constant
+WARNING: single-value variable 'value_WRITE_TO_PRE_DELAY'
+ has been stored as a constant
+WARNING: single-value variable 'max' has been stored as a constant
+Warning: cannot assign value 10001 to variable num_Rx_d
+Warning: cannot assign value 10001 to variable num_Rd_s
+-- no counterexample found with bound 0
+-- no counterexample found with bound 1
+-- no counterexample found with bound 2
+-- no counterexample found with bound 3
+-- no counterexample found with bound 4
+-- specification  G !((((value_READ_TO_PRE_DELAY * num_READ_TO_PRE_DELAY +
+-- num_tCCD * value_tCCD) + value_tRCD > value_tRAS &
+--  num_READ_TO_PRE_DELAY > 0) & num_Rx_d = 0) & num_Rd_s = 0)
+--   is false
+-- as demonstrated by the following execution sequence
+Trace Description: BMC Counterexample 
+Trace Type: Counterexample 
+-> State: 1.1 <-
+  num_requests = 0
+  num_tRP = 0
+  num_tCCD = 0
+  num_tRAS = 0
+  num_tRC = 0
+  num_tRCD = 0
+  num_tRRD = 0
+  num_tFAW = 0
+  num_tRL = 0
+  num_tWL = 0
+  num_tRTP = 0
+  num_tWR = 0
+  num_tWTR = 0
+  num_tRTRS = 0
+  num_tBUS = 0
+  num_Rd_s = 0
+  num_Rx_d = 0
+  num_READ_TO_WRITE_DELAY = 0
+  num_RANK_TO_RANK_DELAY = 0
+  num_READ_TO_PRE_DELAY = 0
+  num_WRITE_TO_READ_DELAY_B = 0
+  num_WRITE_TO_READ_DELAY_R = 0
+  num_WRITE_TO_PRE_DELAY = 0
+  activated_banks = 0
+  command = As_s
+  constraint = RANK_TO_RANK_DELAY
+  value_tRP = 10
+  value_tCCD = 4
+  value_tRAS = 24
+  value_tRC = 34
+  value_tRCD = 10
+  value_tRRD = 4
+  value_tFAW = 20
+  value_tRL = 10
+  value_tWL = 9
+  value_tRTP = 5
+  value_tWR = 10
+  value_tWTR = 5
+  value_tRTRS = 1
+  value_tBUS = 4
+  value_READ_TO_WRITE_DELAY = 6
+  value_RANK_TO_RANK_DELAY = 5
+  value_READ_TO_PRE_DELAY = 5
+  value_WRITE_TO_READ_DELAY_B = 18
+  value_WRITE_TO_READ_DELAY_R = 4
+  value_WRITE_TO_PRE_DELAY = 23
+  max = 10000
+-> State: 1.2 <-
+  num_requests = 1
+  num_tRCD = 1
+  command = Rs_s
+  constraint = tRCD
+-> State: 1.3 <-
+  num_requests = 2
+  num_tCCD = 1
+  constraint = tCCD
+-> State: 1.4 <-
+  num_requests = 3
+  num_tCCD = 2
+-> State: 1.5 <-
+  num_requests = 4
+  num_tCCD = 3
+-> State: 1.6 <-
+  num_READ_TO_PRE_DELAY = 1
+  command = P
+  constraint = READ_TO_PRE_DELAY
+\end{lstlisting} 
+
+Afterwards, \textbf{\textit{CMDmdl\_parser.pl}} parses this file and produces the required output test file as we show below. 
+\begin{lstlisting}[language=bash]
+0x00000000	R
+0x00000040	R
+0x00000080	R
+0x000000c0	R
+\end{lstlisting} 

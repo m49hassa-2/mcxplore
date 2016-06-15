@@ -1,0 +1,8 @@
+###################################
+#DRAMsim2 Scheme2 with 2RNK and 2CH
+####################################
+row_mask 17179344896 #3FFF80000
+bank_mask 3584 #E00
+channel_mask 17179869184 #400000000
+rank_mask 448 #1C0
+column_mask 520192 #7F000 this represents only 7 bits of CH as DRAMsim always have CL at the LS 3 bits
