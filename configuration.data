@@ -1,0 +1,61 @@
+number_of_requests 100000
+transaction_size 64
+address_length 32
+transaction_pattern X
+switch 50
+address_pattern X
+row_pattern X
+num_hits 1000
+rank_pattern X
+bank_pattern X
+channel_pattern X
+column_pattern interleave
+locality 50
+BankInterleave 50
+RankInterleave 50
+ChannelInterleave 50
+#######################################################
+#This file sets the syntax of the test suite as follows:
+#(tab separated)
+#==================
+#Address	TransactionSize	Type :	11
+#Address	Type	:	12
+#
+#(space separated)
+#==================
+#Address	TransactionSize	Type :	21
+#Address	Type	:	22
+#
+#You can add your own configuration and change GenerateTest.pl accordingly
+#You need to specify the number below
+# the request type will be printed exactly as chosen
+#===========================================================================
+#Type_syntax
+#READ WRITE:	31
+#R	W:	32
+#Read	Write:	33
+#===========================================================================
+#Address_syntax
+#set the address length
+#===========================================================================
+syntax 12
+initial_address 00000000
+type_syntax 32
+address_length 32
+initial_type read
+###################################
+#DRAMsim2 Scheme6 with 2RNK and 2CH
+####################################
+#row_mask 1FF80000 #536346624 
+#bank_mask 70000 #458752 #70000
+#channel_mask 100000000 #4294967296 
+#rank_mask 2000 #8192 
+#column_mask FFC0 #65472 this represents only 7 bits of CH as DRAMsim always have CL at the LS 3 bits
+###################################
+#DRAMsim2 Scheme6 with 2RNK and 2CH
+####################################
+row_mask 7FF80000 #17179344896 #
+bank_mask 70000 #458752 #
+channel_mask 800000000 #17179869184 #
+rank_mask E000 #57344 #
+column_mask 1FC0 #8128 #1FC0 this represents only 7 bits of CH as DRAMsim always have CL at the LS 3 bits
